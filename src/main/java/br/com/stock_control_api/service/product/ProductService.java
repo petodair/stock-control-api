@@ -7,7 +7,7 @@ import br.com.stock_control_api.entity.Product;
 import java.util.List;
 
 public interface ProductService {
-    void save(ProductRequestDTO product);
+    Product save(ProductRequestDTO product);
     List<ProductResponseDTO> findAll();
     ProductResponseDTO findById(Long id);
 }
