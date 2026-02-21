@@ -6,11 +6,12 @@ import br.com.stock_control_api.entity.Product;
 import br.com.stock_control_api.mapper.ProductMapper;
 import br.com.stock_control_api.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
