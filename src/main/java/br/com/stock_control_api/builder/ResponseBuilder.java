@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
+import java.net.URI;
+
 public class ResponseBuilder {
     private ResponseBuilder() {}
 
@@ -17,6 +19,12 @@ public class ResponseBuilder {
 
     public static <T> ResponseEntity<ApiResponse<T>> success(T body){
         return success(HttpStatus.OK, "Operação realizada com sucesso!", body);
+    }
+
+    public static <T> ResponseEntity<ApiResponse<T>> created(URI uri, String message, T body){
+        return ResponseEntity
+                .created(uri)
+                .body(new ApiResponse<>(HttpStatus.CREATED,message,body));
     }
 
     public static <T> ResponseEntity<ApiResponse<T>> error(HttpStatusCode code, String message){
