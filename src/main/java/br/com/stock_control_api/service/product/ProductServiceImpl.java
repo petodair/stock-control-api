@@ -5,6 +5,7 @@ import br.com.stock_control_api.dto.product.ProductResponseDTO;
 import br.com.stock_control_api.entity.Product;
 import br.com.stock_control_api.mapper.ProductMapper;
 import br.com.stock_control_api.repository.ProductRepository;
+import br.com.stock_control_api.validator.product.ProductValidator;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +16,16 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductValidator productValidator;
 
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository,  ProductValidator productValidator) {
         this.productRepository = productRepository;
+        this.productValidator = productValidator;
     }
 
     @Override
     public Product save(ProductRequestDTO dto) {
+        productValidator.validate(dto);
         return this.productRepository.save(ProductMapper.toEntity(dto));
     }
 
