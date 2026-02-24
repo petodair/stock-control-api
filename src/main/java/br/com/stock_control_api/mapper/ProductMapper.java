@@ -11,7 +11,8 @@ public abstract class ProductMapper {
         product.setName(dto.name());
         product.setCode(dto.code());
         product.setPrice(dto.price());
-        product.setType(dto.type());
+        product.setMeatType(dto.meatType());
+        product.setStorageType(dto.storageType());
         return product;
     }
 
@@ -21,7 +22,8 @@ public abstract class ProductMapper {
                 product.getName(),
                 product.getCode(),
                 product.getPrice(),
-                product.getType()
+                product.getMeatType(),
+                product.getStorageType()
         );
     }
 

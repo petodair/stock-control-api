@@ -1,6 +1,7 @@
 package br.com.stock_control_api.entity;
 
-import br.com.stock_control_api.enums.ProductType;
+import br.com.stock_control_api.enums.MeatType;
+import br.com.stock_control_api.enums.StorageType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter
@@ -32,8 +34,12 @@ public class Product {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private ProductType type;
+    private MeatType meatType;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private StorageType storageType;
 
     @OneToMany(mappedBy = "product")
-    private List<Batch> batches;
+    private List<Batch> batches = new ArrayList<>();
 }
