@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -32,4 +33,7 @@ public class Product {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ProductType type;
+
+    @OneToMany(mappedBy = "product")
+    private List<Batch> batches;
 }
