@@ -39,8 +39,16 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponseDTO findById(Long id) {
         Optional<Product> product = this.productRepository.findById(id);
         if (product.isEmpty()) {
-            throw new EntityNotFoundException("Product not found with id " + id);
+            throw new EntityNotFoundException("Produto não encontrado com o id: " + id);
         }
         return ProductMapper.toDTO(product.get());
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        if(!this.productRepository.existsById(id)){
+            throw new EntityNotFoundException("Produto com o id: " + id + " não encontrado, para exclusão");
+        }
+        this.productRepository.deleteById(id);
     }
 }

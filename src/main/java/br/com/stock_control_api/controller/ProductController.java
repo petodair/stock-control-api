@@ -48,4 +48,10 @@ public class ProductController {
         return ResponseBuilder.success(HttpStatus.OK, "Produto encontrado e retornado com sucesso!",
                 this.productService.findById(id));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteById(@PathVariable Long id){
+        this.productService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
