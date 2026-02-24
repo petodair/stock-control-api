@@ -37,6 +37,14 @@ public class ProductController {
         return ResponseBuilder.created(uri, "Produto Criado com Sucesso!", product);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<Product>> update(@PathVariable Long id,
+                                                       @RequestBody ProductRequestDTO dto){
+        return ResponseBuilder.success(HttpStatus.OK,
+                "Produto atualizado com sucesso",
+                this.productService.update(id, dto));
+    }
+
     @GetMapping
     public ResponseEntity<ApiResponse<List<ProductResponseDTO>>> findAll(){
         return ResponseBuilder.success(HttpStatus.OK, "Produtos retornados com Sucesso!",

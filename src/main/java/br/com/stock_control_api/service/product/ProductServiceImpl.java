@@ -8,6 +8,7 @@ import br.com.stock_control_api.repository.ProductRepository;
 import br.com.stock_control_api.validator.product.ProductValidator;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,19 @@ public class ProductServiceImpl implements ProductService {
         return this.productRepository.save(ProductMapper.toEntity(dto));
     }
 
+    public Product update(Long id, ProductRequestDTO dto) {
+
+        Product product = this.productRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Produto com o id " + id + " não " +
+                        "encontrado para atualização"));
+
+        if(!dto.code().equals(product.getCode())){
+            productValidator.validate(dto);
+        }
+
+        return this.productRepository.save(ProductMapper.toEntity(dto));
+    }
+
     @Override
     public List<ProductResponseDTO> findAll() {
         List<Product> products = this.productRepository.findAll();
@@ -47,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteById(Long id) {
         if(!this.productRepository.existsById(id)){
-            throw new EntityNotFoundException("Produto com o id: " + id + " não encontrado, para exclusão");
+            throw new EntityNotFoundException("Produto com o id: " + id + " não encontrado para exclusão");
         }
         this.productRepository.deleteById(id);
     }
