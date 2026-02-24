@@ -5,8 +5,10 @@ import br.com.stock_control_api.dto.ApiResponse;
 import br.com.stock_control_api.exception.ResourceConflictException;
 import br.com.stock_control_api.exception.product.ProductCodeAlreadyExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -21,5 +23,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleEntityNotFoundException(EntityNotFoundException ex){
         return ResponseBuilder.error(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiResponse<Void>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex){
+        return ResponseBuilder.error(HttpStatus.UNPROCESSABLE_CONTENT, "Erro ao tentar salvar, verifique se todos os " +
+                "campos estão digitados corretamente.");
     }
 }

@@ -1,6 +1,7 @@
 package br.com.stock_control_api.entity;
 
-import br.com.stock_control_api.enums.ProductType;
+import br.com.stock_control_api.enums.MeatType;
+import br.com.stock_control_api.enums.StorageType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,5 +32,9 @@ public class Product {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private ProductType type;
+    private MeatType meatType;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private StorageType storageType;
 }

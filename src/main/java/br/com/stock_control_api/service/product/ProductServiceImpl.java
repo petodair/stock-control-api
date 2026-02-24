@@ -3,15 +3,14 @@ package br.com.stock_control_api.service.product;
 import br.com.stock_control_api.dto.product.ProductRequestDTO;
 import br.com.stock_control_api.dto.product.ProductResponseDTO;
 import br.com.stock_control_api.entity.Product;
-import br.com.stock_control_api.enums.ProductType;
+import br.com.stock_control_api.enums.MeatType;
+import br.com.stock_control_api.enums.StorageType;
 import br.com.stock_control_api.mapper.ProductMapper;
 import br.com.stock_control_api.repository.ProductRepository;
 import br.com.stock_control_api.validator.product.ProductValidator;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,8 +45,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponseDTO> findAll(String name, String code, ProductType type) {
-        List<Product> products = this.productRepository.findWithFilters(name, code, type);
+    public List<ProductResponseDTO> findAll(String name,
+                                            String code,
+                                            MeatType meatType,
+                                            StorageType storageType) {
+        List<Product> products = this.productRepository.findWithFilters(name, code, meatType, storageType);
         return products.stream().map(ProductMapper::toDTO).toList();
     }
 

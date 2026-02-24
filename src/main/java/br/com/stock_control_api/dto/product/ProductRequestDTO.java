@@ -1,6 +1,7 @@
 package br.com.stock_control_api.dto.product;
 
-import br.com.stock_control_api.enums.ProductType;
+import br.com.stock_control_api.enums.MeatType;
+import br.com.stock_control_api.enums.StorageType;
 
 import java.math.BigDecimal;
 
@@ -8,6 +9,7 @@ public record ProductRequestDTO(
         String name,
         String code,
         BigDecimal price,
-        ProductType type
+        MeatType meatType,
+        StorageType storageType
 ) {
 }
