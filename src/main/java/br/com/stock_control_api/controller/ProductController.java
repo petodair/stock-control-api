@@ -5,6 +5,7 @@ import br.com.stock_control_api.dto.ApiResponse;
 import br.com.stock_control_api.dto.product.ProductRequestDTO;
 import br.com.stock_control_api.dto.product.ProductResponseDTO;
 import br.com.stock_control_api.entity.Product;
+import br.com.stock_control_api.enums.ProductType;
 import br.com.stock_control_api.service.product.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,9 +47,13 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ProductResponseDTO>>> findAll(){
+    public ResponseEntity<ApiResponse<List<ProductResponseDTO>>> findAll(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "code", required = false) String code,
+            @RequestParam(value = "type", required = false) ProductType type
+            ){
         return ResponseBuilder.success(HttpStatus.OK, "Produtos retornados com Sucesso!",
-                this.productService.findAll());
+                this.productService.findAll(name,code,type));
     }
 
     @GetMapping("/{id}")
