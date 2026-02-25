@@ -27,20 +27,20 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Product>> save(@RequestBody ProductRequestDTO dto){
-        Product product = this.productService.save(dto);
+    public ResponseEntity<ApiResponse<ProductResponseDTO>> save(@RequestBody ProductRequestDTO dto){
+        ProductResponseDTO product = this.productService.save(dto);
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(product.getId())
+                .buildAndExpand(product.id())
                 .toUri();
 
         return ResponseBuilder.created(uri, "Produto Criado com Sucesso!", product);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Product>> update(@PathVariable Long id,
+    public ResponseEntity<ApiResponse<ProductResponseDTO>> update(@PathVariable Long id,
                                                        @RequestBody ProductRequestDTO dto){
         return ResponseBuilder.success(HttpStatus.OK,
                 "Produto atualizado com sucesso",
