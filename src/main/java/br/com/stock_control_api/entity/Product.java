@@ -3,6 +3,7 @@ package br.com.stock_control_api.entity;
 import br.com.stock_control_api.enums.MeatType;
 import br.com.stock_control_api.enums.StorageType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

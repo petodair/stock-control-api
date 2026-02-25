@@ -8,6 +8,7 @@ import br.com.stock_control_api.entity.Product;
 import br.com.stock_control_api.enums.MeatType;
 import br.com.stock_control_api.enums.StorageType;
 import br.com.stock_control_api.service.product.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<ProductResponseDTO>> save(@RequestBody ProductRequestDTO dto){
+    public ResponseEntity<ApiResponse<ProductResponseDTO>> save(@RequestBody @Valid ProductRequestDTO dto){
         ProductResponseDTO product = this.productService.save(dto);
 
         URI uri = ServletUriComponentsBuilder
@@ -41,7 +42,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<ProductResponseDTO>> update(@PathVariable Long id,
-                                                       @RequestBody ProductRequestDTO dto){
+                                                       @RequestBody @Valid ProductRequestDTO dto){
         return ResponseBuilder.success(HttpStatus.OK,
                 "Produto atualizado com sucesso",
                 this.productService.update(id, dto));
