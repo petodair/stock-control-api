@@ -62,16 +62,21 @@ public class BatchServiceImpl implements BatchService {
 
     @Override
     public List<Batch> findAll(String batchNumber, BatchLocal batchLocal) {
-        return List.of();
+        return this.batchRepository.findWithFilters(batchNumber, batchLocal);
     }
 
     @Override
     public Batch findById(Long id) {
-        return null;
+        return this.batchRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Lote com o id " + id + " não encontrado"));
     }
 
     @Override
     public void delete(Long id) {
-
+        if (!this.batchRepository.existsById(id)) {
+            throw new EntityNotFoundException("Lote com o id " + id + " não encontrado" +
+                    " para exclusão");
+        }
+        this.batchRepository.deleteById(id);
     }
 }
