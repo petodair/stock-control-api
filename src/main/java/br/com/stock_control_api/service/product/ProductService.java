@@ -9,8 +9,8 @@ import br.com.stock_control_api.enums.StorageType;
 import java.util.List;
 
 public interface ProductService {
-    Product save(ProductRequestDTO product);
-    Product update(Long id, ProductRequestDTO dto);
+    ProductResponseDTO save(ProductRequestDTO product);
+    ProductResponseDTO update(Long id, ProductRequestDTO dto);
     List<ProductResponseDTO> findAll(String name, String code, MeatType meatType, StorageType storageType);
     ProductResponseDTO findById(Long id);
     void deleteById(Long id);

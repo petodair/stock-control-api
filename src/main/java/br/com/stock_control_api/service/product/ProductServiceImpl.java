@@ -26,12 +26,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product save(ProductRequestDTO dto) {
+    public ProductResponseDTO save(ProductRequestDTO dto) {
         productValidator.validate(dto);
-        return this.productRepository.save(ProductMapper.toEntity(dto));
+        return ProductMapper.toDTO(this.productRepository.save(ProductMapper.toEntity(dto)));
     }
 
-    public Product update(Long id, ProductRequestDTO dto) {
+    public ProductResponseDTO update(Long id, ProductRequestDTO dto) {
 
         Product product = this.productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Produto com o id " + id + " não " +
@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
             productValidator.validate(dto);
         }
 
-        return this.productRepository.save(ProductMapper.toEntity(id, dto));
+        return ProductMapper.toDTO(this.productRepository.save(ProductMapper.toEntity(dto)));
     }
 
     @Override
