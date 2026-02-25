@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
             productValidator.validate(dto);
         }
 
-        return this.productRepository.save(ProductMapper.toEntity(dto));
+        return this.productRepository.save(ProductMapper.toEntity(id, dto));
     }
 
     @Override

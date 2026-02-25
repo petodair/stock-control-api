@@ -16,6 +16,17 @@ public abstract class ProductMapper {
         return product;
     }
 
+    public static Product toEntity(Long id, ProductRequestDTO dto) {
+        Product product = new Product();
+        product.setId(id);
+        product.setName(dto.name());
+        product.setCode(dto.code());
+        product.setPrice(dto.price());
+        product.setMeatType(dto.meatType());
+        product.setStorageType(dto.storageType());
+        return product;
+    }
+
     public static ProductResponseDTO toDTO(Product product) {
         return new ProductResponseDTO(
                 product.getId(),
