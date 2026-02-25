@@ -1,6 +1,7 @@
 package br.com.stock_control_api.service.batch;
 
 import br.com.stock_control_api.dto.batch.BatchRequestDTO;
+import br.com.stock_control_api.dto.batch.BatchResponseDTO;
 import br.com.stock_control_api.entity.Batch;
 import br.com.stock_control_api.entity.Product;
 import br.com.stock_control_api.enums.BatchLocal;
@@ -28,7 +29,7 @@ public class BatchServiceImpl implements BatchService {
     }
 
     @Override
-    public Batch save(BatchRequestDTO dto) {
+    public BatchResponseDTO save(BatchRequestDTO dto) {
         this.batchValidator.validate(dto);
 
         Batch batch = BatchMapper.toEntity(dto);
@@ -38,13 +39,13 @@ public class BatchServiceImpl implements BatchService {
                 .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado com ID: " + dto.productId()));
 
         batch.setProduct(product);
-        return this.batchRepository.save(batch);
+        return BatchMapper.toDTO(batchRepository.save(batch));
     }
 
     @Override
-    public Batch update(Long id, BatchRequestDTO dto) {
+    public BatchResponseDTO update(Long id, BatchRequestDTO dto) {
         Batch batch = this.batchRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Lote com o id " + id + " não " +
+                () -> new EntityNotFoundException("Lote com o ID " + id + " não " +
                         "encontrado para atualização"
         ));
 
@@ -52,29 +53,38 @@ public class BatchServiceImpl implements BatchService {
             this.batchValidator.validate(dto);
         }
 
+        if (!batch.getProduct().getId().equals(dto.productId())) {
+            Product newProduct = this.productRepository.findById(dto.productId())
+                    .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado com ID: " + dto.productId()));
+            batch.setProduct(newProduct);
+        }
+
         batch.setBatchNumber(dto.batchNumber());
         batch.setManufacturingDate(dto.manufacturingDate());
         batch.setExpirationDate(dto.expirationDate());
         batch.setBatchLocal(dto.batchLocal());
 
-        return this.batchRepository.save(batch);
+        return BatchMapper.toDTO(batchRepository.save(batch));
     }
 
     @Override
-    public List<Batch> findAll(String batchNumber, BatchLocal batchLocal) {
-        return this.batchRepository.findWithFilters(batchNumber, batchLocal);
+    public List<BatchResponseDTO> findAll(String batchNumber, BatchLocal batchLocal) {
+        return this.batchRepository.findWithFilters(batchNumber, batchLocal).stream().map(
+                BatchMapper::toDTO
+        ).toList();
     }
 
     @Override
-    public Batch findById(Long id) {
-        return this.batchRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Lote com o id " + id + " não encontrado"));
+    public BatchResponseDTO findById(Long id) {
+        return this.batchRepository.findById(id).map(BatchMapper::toDTO).orElseThrow(
+                () -> new EntityNotFoundException("Lote com o ID " + id + " não encontrado")
+        );
     }
 
     @Override
     public void delete(Long id) {
         if (!this.batchRepository.existsById(id)) {
-            throw new EntityNotFoundException("Lote com o id " + id + " não encontrado" +
+            throw new EntityNotFoundException("Lote com o ID " + id + " não encontrado" +
                     " para exclusão");
         }
         this.batchRepository.deleteById(id);
