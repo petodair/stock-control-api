@@ -25,7 +25,7 @@ public class Batch {
     private LocalDate manufacturingDate;
     private LocalDate expirationDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
 
