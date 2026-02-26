@@ -3,6 +3,7 @@ package br.com.stock_control_api.configuration;
 import br.com.stock_control_api.builder.ResponseBuilder;
 import br.com.stock_control_api.dto.ApiResponse;
 import br.com.stock_control_api.dto.FieldErrorResponse;
+import br.com.stock_control_api.exception.IllegalDateException;
 import br.com.stock_control_api.exception.ResourceConflictException;
 import br.com.stock_control_api.exception.product.ProductCodeAlreadyExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -43,5 +44,10 @@ public class GlobalExceptionHandler {
                 .toList();
         return ResponseBuilder.error(HttpStatus.UNPROCESSABLE_CONTENT, "Erro ao validar campos",
                 errorList);
+    }
+
+    @ExceptionHandler(IllegalDateException.class)
+    public ResponseEntity<ApiResponse<List<FieldErrorResponse>>> handleIllegalDateException(IllegalDateException ex){
+        return ResponseBuilder.error(HttpStatus.UNPROCESSABLE_CONTENT, ex.getMessage());
     }
 }
