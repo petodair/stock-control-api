@@ -4,6 +4,7 @@ import br.com.stock_control_api.enums.BatchLocal;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -30,6 +31,8 @@ public class Batch {
 
     @Enumerated(EnumType.STRING)
     private BatchLocal batchLocal;
+
+    private BigDecimal quantity;
 
     public boolean isExpired() {
         return LocalDate.now().isAfter(expirationDate);

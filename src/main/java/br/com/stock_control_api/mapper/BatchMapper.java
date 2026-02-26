@@ -11,6 +11,7 @@ public abstract class BatchMapper {
         batch.setManufacturingDate(dto.manufacturingDate());
         batch.setExpirationDate(dto.expirationDate());
         batch.setBatchLocal(dto.batchLocal());
+        batch.setQuantity(dto.quantity());
         return batch;
     }
 
@@ -21,6 +22,7 @@ public abstract class BatchMapper {
                 batch.getManufacturingDate(),
                 batch.getExpirationDate(),
                 batch.getBatchLocal(),
+                batch.getQuantity(),
                 batch.isExpired(),
                 batch.getProduct().getId(),
                 batch.getProduct().getName(),

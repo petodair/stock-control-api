@@ -11,6 +11,7 @@ public record BatchResponseDTO(
         LocalDate manufacturingDate,
         LocalDate expirationDate,
         BatchLocal batchLocal,
+        BigDecimal quantity,
         boolean isExpired,
         Long productId,
         String productName,
