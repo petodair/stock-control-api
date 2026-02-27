@@ -12,24 +12,24 @@ import java.util.List;
 public class ResponseBuilder {
     private ResponseBuilder() {}
 
-    public static <T> ResponseEntity<ApiResponse<T>> success(HttpStatusCode code, String message, T body) {
+    public static <T> ResponseEntity<ApiResponse<T>> success(HttpStatusCode code, String message, T body){
         return new ResponseEntity<>(
                 new ApiResponse<>(code, message, body),
                 code
         );
     }
 
-    public static <T> ResponseEntity<ApiResponse<T>> success(T body) {
+    public static <T> ResponseEntity<ApiResponse<T>> success(T body){
         return success(HttpStatus.OK, "Operação realizada com sucesso!", body);
     }
 
-    public static <T> ResponseEntity<ApiResponse<T>> created(URI uri, String message, T body) {
+    public static <T> ResponseEntity<ApiResponse<T>> created(URI uri, String message, T body){
         return ResponseEntity
                 .created(uri)
-                .body(new ApiResponse<>(HttpStatus.CREATED, message, body));
+                .body(new ApiResponse<>(HttpStatus.CREATED,message,body));
     }
 
-    public static <T> ResponseEntity<ApiResponse<T>> error(HttpStatusCode code, String message) {
+    public static <T> ResponseEntity<ApiResponse<T>> error(HttpStatusCode code, String message){
         return new ResponseEntity<>(
                 new ApiResponse<>(code, message, null),
                 code
@@ -39,7 +39,7 @@ public class ResponseBuilder {
     public static <T> ResponseEntity<ApiResponse<List<FieldErrorResponse>>> error(
             HttpStatusCode code,
             String message,
-            List<FieldErrorResponse> fieldErrors) {
+            List<FieldErrorResponse> fieldErrors){
         return new ResponseEntity<>(
                 new ApiResponse<>(code, message, fieldErrors),
                 code
