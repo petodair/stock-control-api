@@ -11,6 +11,7 @@ public interface BatchService {
     BatchResponseDTO save(BatchRequestDTO dto);
     BatchResponseDTO update(Long id, BatchRequestDTO dto);
     List<BatchResponseDTO> findAll(String batchNumber, BatchLocal batchLocal);
+    List<BatchResponseDTO> findByExample(String batchNumber, BatchLocal batchLocal);
     BatchResponseDTO findById(Long id);
     void delete(Long id);
 }

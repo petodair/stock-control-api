@@ -10,6 +10,8 @@ import br.com.stock_control_api.repository.BatchRepository;
 import br.com.stock_control_api.repository.ProductRepository;
 import br.com.stock_control_api.validator.batch.BatchValidator;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,7 +35,6 @@ public class BatchServiceImpl implements BatchService {
         this.batchValidator.validate(dto);
 
         Batch batch = BatchMapper.toEntity(dto);
-
 
         Product product = this.productRepository.findById(dto.productId())
                 .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado com ID: " + dto.productId()));
@@ -73,6 +74,23 @@ public class BatchServiceImpl implements BatchService {
                 BatchMapper::toDTO
         ).toList();
     }
+
+    @Override
+     public List<BatchResponseDTO> findByExample(String batchNumber, BatchLocal batchLocal){
+        Batch batch = new Batch();
+        batch.setBatchNumber(batchNumber);
+        batch.setBatchLocal(batchLocal);
+         ExampleMatcher matcher = ExampleMatcher
+                 .matching()
+                 .withIgnoreNullValues()
+                 .withIgnoreCase()
+                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+         Example<Batch> example = Example.of(batch, matcher);
+         return this.batchRepository.findAll(example)
+                 .stream()
+                 .map(BatchMapper::toDTO)
+                 .toList();
+     }
 
     @Override
     public BatchResponseDTO findById(Long id) {
