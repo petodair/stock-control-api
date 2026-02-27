@@ -54,5 +54,7 @@ jobs:
           username: ${{ secrets.USUARIOCPANEL }}
           password: ${{ secrets.SENHACPANEL }}
           script: |
+            sed -i 's/\r$//' ~/appservers/tmp/${{ steps.jar_name.outputs.jar_name }}.sh
+            
             bash ~/appservers/tmp/${{ steps.jar_name.outputs.jar_name }}.sh stop
             bash ~/appservers/tmp/${{ steps.jar_name.outputs.jar_name }}.sh start
