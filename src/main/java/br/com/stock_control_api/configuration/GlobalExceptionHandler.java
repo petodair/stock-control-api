@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(IllegalDateException.class)
-    public ResponseEntity<ApiResponse<List<FieldErrorResponse>>> handleIllegalDateException(IllegalDateException ex){
+    public ResponseEntity<ApiResponse<Void>> handleIllegalDateException(IllegalDateException ex){
         return ResponseBuilder.error(HttpStatus.UNPROCESSABLE_CONTENT, ex.getMessage());
     }
 }
