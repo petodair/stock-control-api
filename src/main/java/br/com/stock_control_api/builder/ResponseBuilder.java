@@ -10,8 +10,7 @@ import java.net.URI;
 import java.util.List;
 
 public class ResponseBuilder {
-    private ResponseBuilder() {
-    }
+    private ResponseBuilder() {}
 
     public static <T> ResponseEntity<ApiResponse<T>> success(HttpStatusCode code, String message, T body) {
         return new ResponseEntity<>(
