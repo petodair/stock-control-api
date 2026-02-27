@@ -1,0 +1,59 @@
+name: Maven Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    outputs:
+      jar_name: ${{ steps.jar_name.outputs.jar_name }}
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 21 LTS
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Build com Maven
+        run: mvn -B package --file pom.xml
+
+      - name: Criando o diretório para o Build do JAR
+        run: mkdir ./jar-upload
+
+      - name: Copiando JAR gerado para a pasta jar-upload
+        run: cp ./target/*.jar ./jar-upload
+
+      - name: Definir nome do arquivo JAR sem extensão
+        id: jar_name
+        run: echo "jar_name=$(basename $(ls ./jar-upload/*.jar) .jar)" >> $GITHUB_OUTPUT
+
+      - name: Usar o nome do JAR em outra etapa
+        run: echo "O nome do arquivo JAR é ${{ steps.jar_name.outputs.jar_name }}"
+
+      - name: Enviando os JAR por FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.HOST }}
+          username: ${{ secrets.USUARIOCPANEL }}
+          password: ${{ secrets.SENHACPANEL }}
+          local-dir: ./jar-upload/
+          server-dir: ~/appservers/standalone/
+
+      - name: Reiniciar o Spring Boot via SSH de forma segura
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USUARIOCPANEL }}
+          password: ${{ secrets.SENHACPANEL }}
+          script: |
+            # Os comandos são executados sequencialmente direto no servidor
+            bash appservers/tmp/${{ steps.jar_name.outputs.jar_name }}.sh stop
+            bash appservers/tmp/${{ steps.jar_name.outputs.jar_name }}.sh start
