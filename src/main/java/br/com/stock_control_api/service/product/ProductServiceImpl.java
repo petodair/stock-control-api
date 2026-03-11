@@ -41,7 +41,13 @@ public class ProductServiceImpl implements ProductService {
             productValidator.validate(dto);
         }
 
-        return ProductMapper.toDTO(this.productRepository.save(ProductMapper.toEntity(dto)));
+        product.setName(dto.name());
+        product.setCode(dto.code());
+        product.setPrice(dto.price());
+        product.setMeatType(dto.meatType());
+        product.setStorageType(dto.storageType());
+
+        return ProductMapper.toDTO(this.productRepository.save(product));
     }
 
     @Override
