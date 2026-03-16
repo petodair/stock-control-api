@@ -5,6 +5,7 @@ import br.com.stock_control_api.dto.ApiResponse;
 import br.com.stock_control_api.dto.FieldErrorResponse;
 import br.com.stock_control_api.exception.IllegalDateException;
 import br.com.stock_control_api.exception.ResourceConflictException;
+import br.com.stock_control_api.exception.ResourceNotExistsException;
 import br.com.stock_control_api.exception.product.ProductCodeAlreadyExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -49,5 +50,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalDateException.class)
     public ResponseEntity<ApiResponse<Void>> handleIllegalDateException(IllegalDateException ex){
         return ResponseBuilder.error(HttpStatus.UNPROCESSABLE_CONTENT, ex.getMessage());
+    }
+
+    @ExceptionHandler(ResourceNotExistsException.class)
+    public ResponseEntity<ApiResponse<Void>> handleResourceNotExistsException(ResourceNotExistsException ex){
+        return ResponseBuilder.error(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 }
