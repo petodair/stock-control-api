@@ -11,6 +11,7 @@ import br.com.stock_control_api.service.product.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -48,6 +49,7 @@ public class ProductController {
                 this.productService.update(id, dto));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<ApiResponse<List<ProductResponseDTO>>> findAll(
             @RequestParam(value = "name", required = false) String name,
