@@ -10,10 +10,9 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "tb_batch")
 public class Batch {
 
     @Id

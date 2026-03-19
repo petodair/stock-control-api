@@ -3,8 +3,6 @@ package br.com.stock_control_api.entity;
 import br.com.stock_control_api.enums.MeatType;
 import br.com.stock_control_api.enums.StorageType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,9 +13,8 @@ import java.util.List;
 
 @Getter @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "tb_produto")
+@Table(name = "tb_product")
 public class Product {
 
     @Id
@@ -27,10 +24,10 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String code;
 
-    @Column
+    @Column(precision = 10, scale = 2)
     private BigDecimal price;
 
     @Column(nullable = false)
