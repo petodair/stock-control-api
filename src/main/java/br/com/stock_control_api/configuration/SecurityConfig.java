@@ -49,13 +49,15 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
+
         config.setAllowedOrigins(List.of(
                 "http://localhost:5173",
                 "https://peter6706.c44.integrator.host",
                 "http://peter6706.c44.integrator.host"
         ));
-        config.setAllowedHeaders(List.of("*"));
+
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
