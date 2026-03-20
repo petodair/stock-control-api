@@ -29,19 +29,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, SecurityFilter securityFilter)
             throws Exception {
-     return http
-             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-             .csrf(AbstractHttpConfigurer::disable)
-             .logout(AbstractHttpConfigurer::disable)
-             .sessionManagement(session ->
-                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-             .authorizeHttpRequests(request -> {
-                 request.requestMatchers("/users", "/users/**", "/login", "/me", "/logout").permitAll();
-                 request.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-                 request.anyRequest().authenticated();
-             })
-             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-             .build();
+        return http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .logout(AbstractHttpConfigurer::disable)
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(request -> {
+                    request.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+                    request.requestMatchers("/users", "/users/**", "/login", "/logout", "/me").permitAll();
+                    request.anyRequest().authenticated();
+                })
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     @Bean
@@ -49,13 +51,9 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-
         config.setAllowedOrigins(List.of(
-                "http://localhost:5173",
-                "https://peter6706.c44.integrator.host",
-                "http://peter6706.c44.integrator.host"
+                "https://peter6706.c44.integrator.host"
         ));
-
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
 
