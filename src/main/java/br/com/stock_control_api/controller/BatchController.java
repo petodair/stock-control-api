@@ -4,10 +4,14 @@ import br.com.stock_control_api.builder.ResponseBuilder;
 import br.com.stock_control_api.dto.ApiResponse;
 import br.com.stock_control_api.dto.batch.BatchRequestDTO;
 import br.com.stock_control_api.dto.batch.BatchResponseDTO;
+import br.com.stock_control_api.entity.Batch;
 import br.com.stock_control_api.enums.BatchLocal;
+import br.com.stock_control_api.service.batch.BatchPdfService;
 import br.com.stock_control_api.service.batch.BatchService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,9 +24,12 @@ import java.util.List;
 public class BatchController {
 
     private final BatchService batchService;
+    private final BatchPdfService batchPdfService;
 
-    public BatchController(BatchService batchService) {
+    public BatchController(BatchService batchService, BatchPdfService batchPdfService) {
         this.batchService = batchService;
+        this.batchPdfService = batchPdfService;
+
     }
 
     @PostMapping
@@ -63,5 +70,17 @@ public class BatchController {
     public ResponseEntity<Void> deleteById(@PathVariable Long id){
         this.batchService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/pdf")
+    public ResponseEntity<byte[]> generatePdf() {
+        List<BatchResponseDTO> batches = batchService.findAll(null,null);
+
+        byte[] pdf = batchPdfService.generatePdf(batches);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=lotes.pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdf);
     }
 }
