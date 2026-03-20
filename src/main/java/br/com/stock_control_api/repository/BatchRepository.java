@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface BatchRepository extends JpaRepository<Batch, Long> {
 
@@ -17,4 +19,10 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
                                 @Param("batchLocal") BatchLocal batchLocal);
 
     boolean existsByBatchNumber(String batchNumber);
+
+    Optional<Batch> findByBatchNumberAndExpirationDateAndProductId(
+            String batchNumber,
+            LocalDate expirationDate,
+            Long productId
+    );
 }

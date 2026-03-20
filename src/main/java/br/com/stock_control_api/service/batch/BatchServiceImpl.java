@@ -34,13 +34,24 @@ public class BatchServiceImpl implements BatchService {
     public BatchResponseDTO save(BatchRequestDTO dto) {
         this.batchValidator.validate(dto);
 
-        Batch batch = BatchMapper.toEntity(dto);
-
         Product product = this.productRepository.findById(dto.productId())
                 .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado com ID: " + dto.productId()));
 
-        batch.setProduct(product);
-        return BatchMapper.toDTO(batchRepository.save(batch));
+        return this.batchRepository
+                .findByBatchNumberAndExpirationDateAndProductId(
+                        dto.batchNumber(),
+                        dto.expirationDate(),
+                        dto.productId()
+                )
+                .map(existingBatch -> {
+                    existingBatch.setQuantity(existingBatch.getQuantity().add(dto.quantity()));
+                    return BatchMapper.toDTO(this.batchRepository.save(existingBatch));
+                })
+                .orElseGet(() -> {
+                    Batch batch = BatchMapper.toEntity(dto);
+                    batch.setProduct(product);
+                    return BatchMapper.toDTO(this.batchRepository.save(batch));
+                });
     }
 
     @Override
