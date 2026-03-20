@@ -25,7 +25,10 @@ public class User {
     private Long id;
 
     @Column
-    private String username;
+    private String firstName;
+
+    @Column
+    private String lastName;
 
     @Column
     private String email;

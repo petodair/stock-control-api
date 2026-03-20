@@ -10,6 +10,11 @@ public record UserRequestDTO(
         String email,
 
         @NotBlank
+        String firstName,
+
+        String lastName,
+
+        @NotBlank
         String password,
 
         @NotNull
