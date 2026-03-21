@@ -18,9 +18,6 @@ public class BatchValidatorImpl implements BatchValidator {
 
     @Override
     public void validate(BatchRequestDTO dto) {
-        if (batchRepository.existsByBatchNumber(dto.batchNumber())) {
-            throw new BatchNumberAlreadyExists(dto.batchNumber());
-        }
         if (dto.manufacturingDate().isAfter(dto.expirationDate())){
             throw new IllegalDateException("A data de fabricação não pode ser depois da data de validade");
         }
