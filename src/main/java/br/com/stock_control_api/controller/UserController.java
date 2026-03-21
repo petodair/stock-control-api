@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
+    @GetMapping
     public ResponseEntity<ApiResponse<List<User>>> save(){
         return ResponseBuilder.success(HttpStatus.OK, "Usuários retornados com sucesso!",
                 this.userService.findAll());
