@@ -49,7 +49,6 @@ public class ProductController {
                 this.productService.update(id, dto));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<ApiResponse<List<ProductResponseDTO>>> findAll(
             @RequestParam(value = "name", required = false) String name,
