@@ -6,7 +6,7 @@ import io.github.stock_control_api.entity.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ProductMapper {
 
     ProductResponseDTO toDto(Product product);
