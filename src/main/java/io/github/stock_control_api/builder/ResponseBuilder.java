@@ -10,47 +10,43 @@ import java.net.URI;
 public class ResponseBuilder<D> {
 
     ApiResponse.ResponseStatus responseStatus = ApiResponse.ResponseStatus.SUCCESS;
-    HttpStatus status = HttpStatus.CONTINUE;
+    HttpStatus status = HttpStatus.OK;
     private String message = "";
     private D data;
 
-    public ResponseBuilder() {}
+    private ResponseBuilder() {}
+
+    public static <D> ResponseBuilder<D> builder() {
+        return new ResponseBuilder<>();
+    }
 
     public ResponseEntity<ApiResponse<D>> ok(){
-        return ResponseEntity.ok(
-                new ApiResponse<>(
-                        ApiResponse.ResponseStatus.SUCCESS,
-                        HttpStatus.OK,
-                        this.message,
-                        data
-                )
-        );
+        this.status = HttpStatus.OK;
+        this.responseStatus = ApiResponse.ResponseStatus.SUCCESS;
+        return build();
     }
 
     public <ID> ResponseEntity<ApiResponse<D>> created(ID id){
+        this.status = HttpStatus.CREATED;
+        this.responseStatus = ApiResponse.ResponseStatus.SUCCESS;
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(id)
                 .toUri();
-        return ResponseEntity.created(uri).body(
-                new ApiResponse<>(
-                        ApiResponse.ResponseStatus.SUCCESS,
-                        HttpStatus.CREATED,
-                        this.message,
-                        this.data
-                )
-        );
+        return ResponseEntity.created(uri).body(createResponse());
     }
 
     public ResponseEntity<ApiResponse<D>> build(){
-        return ResponseEntity.status(this.status).body(
-                new ApiResponse<>(
-                        this.responseStatus,
-                        this.status,
-                        this.message,
-                        this.data
-                )
+        return ResponseEntity.status(this.status).body(createResponse());
+    }
+
+    public ApiResponse<D> createResponse(){
+        return new ApiResponse<>(
+                this.responseStatus,
+                this.status,
+                this.message,
+                this.data
         );
     }
 

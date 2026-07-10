@@ -29,16 +29,16 @@ public class ProductController {
                 .stream()
                 .map(productMapper::toDto)
                 .toList();
-        return new ResponseBuilder<List<ProductResponseDTO>>()
-                .message("Produtos retornados com sucesso!")
+        return ResponseBuilder.<List<ProductResponseDTO>>builder()
                 .data(products)
+                .message("Produtos retornados com sucesso!")
                 .ok();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<ProductResponseDTO>> findById(@PathVariable Long id){
         ProductResponseDTO productDto = productMapper.toDto(productService.findById(id));
-        return new ResponseBuilder<ProductResponseDTO>()
+        return ResponseBuilder.<ProductResponseDTO>builder()
                 .message("Produto de id "+id+" retornado com sucesso")
                 .data(productDto)
                 .ok();
@@ -49,7 +49,7 @@ public class ProductController {
         Product product = productMapper.toEntity(productRequestDTO);
         product = productService.save(product);
 
-        return new ResponseBuilder<ProductResponseDTO>()
+        return ResponseBuilder.<ProductResponseDTO>builder()
                 .data(productMapper.toDto(product))
                 .message("Produto criado com sucesso")
                 .created(product.getId());
@@ -63,9 +63,9 @@ public class ProductController {
         Product product = productMapper.toEntity(productRequestDTO);
         product = productService.update(product,id);
 
-        return new ResponseBuilder<ProductResponseDTO>()
-                .message("Produto atualizado com sucesso")
+        return ResponseBuilder.<ProductResponseDTO>builder()
                 .data(productMapper.toDto(product))
+                .message("Produto atualizado com sucesso")
                 .ok();
     }
 
