@@ -10,6 +10,10 @@ public class ProductMock {
     private ProductMock(){}
 
     public static Product mockProduct(){
+        return new Product(null,"Alcatra c/ Maminha", "8679", new BigDecimal("39.90"));
+    }
+
+    public static Product mockProductWithId(){
         return new Product(1L,"Alcatra c/ Maminha", "8679", new BigDecimal("39.90"));
     }
 
