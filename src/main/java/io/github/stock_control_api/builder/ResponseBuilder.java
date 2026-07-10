@@ -20,6 +20,10 @@ public class ResponseBuilder<D> {
         return new ResponseBuilder<>();
     }
 
+    public ResponseEntity<ApiResponse<D>> build(){
+        return ResponseEntity.status(this.status).body(createResponse());
+    }
+
     public ResponseEntity<ApiResponse<D>> ok(){
         this.status = HttpStatus.OK;
         this.responseStatus = ApiResponse.ResponseStatus.SUCCESS;
@@ -37,8 +41,11 @@ public class ResponseBuilder<D> {
         return ResponseEntity.created(uri).body(createResponse());
     }
 
-    public ResponseEntity<ApiResponse<D>> build(){
-        return ResponseEntity.status(this.status).body(createResponse());
+    public ResponseEntity<ApiResponse<D>> notFound(){
+        this.status = HttpStatus.NOT_FOUND;
+        this.responseStatus = ApiResponse.ResponseStatus.ERROR;
+        this.data = null;
+        return build();
     }
 
     public ApiResponse<D> createResponse(){

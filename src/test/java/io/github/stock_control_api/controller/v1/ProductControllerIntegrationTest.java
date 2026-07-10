@@ -75,4 +75,18 @@ public class ProductControllerIntegrationTest extends AbstractIntegrationTest{
         .then()
                 .statusCode(204);
     }
+
+    @Test
+    void shouldNotFoundProduct(){
+        given()
+                .pathParam("id", 1)
+
+        .when()
+                .get("/api/v1/products/{id}")
+
+        .then()
+                .log()
+                .all()
+                .statusCode(404);
+    }
 }
