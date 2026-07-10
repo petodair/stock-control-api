@@ -1,39 +1,34 @@
 package io.github.stock_control_api.controller.v1;
 
+import io.github.stock_control_api.AbstractIntegrationTest;
 import io.github.stock_control_api.entity.Product;
 import io.github.stock_control_api.mock.ProductMock;
+import io.github.stock_control_api.repository.ProductRepository;
 import io.github.stock_control_api.service.ProductService;
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import static io.restassured.RestAssured.*;
 
-@Testcontainers
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ProductControllerIntegrationTest {
+public class ProductControllerIntegrationTest extends AbstractIntegrationTest{
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Container
     @ServiceConnection
     static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.0");
 
-    @LocalServerPort
-    private int port;
-
-    @BeforeEach
-    void setUp() {
-        RestAssured.port = port;
+    @Override
+    protected JpaRepository<?, ?> repository() {
+        return productRepository;
     }
 
     @Test
