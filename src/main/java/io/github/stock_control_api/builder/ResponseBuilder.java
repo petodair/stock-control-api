@@ -48,6 +48,13 @@ public class ResponseBuilder<D> {
         return build();
     }
 
+    public ResponseEntity<ApiResponse<D>> conflict(){
+        this.status = HttpStatus.CONFLICT;
+        this.responseStatus = ApiResponse.ResponseStatus.ERROR;
+        this.data = null;
+        return build();
+    }
+
     public ApiResponse<D> createResponse(){
         return new ApiResponse<>(
                 this.responseStatus,

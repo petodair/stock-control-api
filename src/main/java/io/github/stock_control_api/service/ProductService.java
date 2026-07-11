@@ -26,6 +26,7 @@ public class ProductService {
     }
 
     public Product save(Product product){
+        this.productValidate.existsByCode(product.getCode());
         return productRepository.save(product);
     }
 

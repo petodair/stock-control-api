@@ -89,4 +89,20 @@ public class ProductControllerIntegrationTest extends AbstractIntegrationTest{
                 .all()
                 .statusCode(404);
     }
+
+    @Test
+    void shouldThrowConflictException(){
+        Product product = ProductMock.mockProduct();
+        this.productService.save(product);
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(product)
+
+                .when()
+                .post("api/v1/products")
+
+                .then()
+                .statusCode(409);
+    }
 }
