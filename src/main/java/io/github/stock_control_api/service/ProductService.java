@@ -31,7 +31,10 @@ public class ProductService {
     }
 
     public Product update(Product product, Long id){
-        this.productValidate.existsById(id);
+        Product productToUpdate = this.findById(id);
+        productToUpdate.setName(product.getName());
+        productToUpdate.setCode(product.getCode());
+        productToUpdate.setPrice(product.getPrice());
         return productRepository.save(product);
     }
 
