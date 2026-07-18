@@ -28,4 +28,8 @@ public class Product {
 
     @Column(precision = 8, scale = 2)
     private BigDecimal price;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_type_id")
+    private ProductType productType;
 }
