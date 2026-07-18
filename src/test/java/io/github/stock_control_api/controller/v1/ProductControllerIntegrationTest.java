@@ -103,6 +103,8 @@ public class ProductControllerIntegrationTest extends AbstractIntegrationTest{
                 .post("api/v1/products")
 
                 .then()
+                .log()
+                .all()
                 .statusCode(409);
     }
 }
