@@ -1,8 +1,10 @@
 package io.github.stock_control_api.service;
 
+import io.github.stock_control_api.dto.v1.product.ProductFilter;
 import io.github.stock_control_api.entity.Product;
 import io.github.stock_control_api.exception.product.ProductNotFoundException;
 import io.github.stock_control_api.repository.ProductRepository;
+import io.github.stock_control_api.specification.ProductSpecification;
 import io.github.stock_control_api.validate.ProductValidate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,8 +18,8 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductValidate productValidate;
 
-    public List<Product> findAll(){
-        return productRepository.findAll();
+    public List<Product> findAll(ProductFilter productFilter) {
+        return productRepository.findAll(ProductSpecification.withFilter(productFilter));
     }
 
     public Product findById(Long id){

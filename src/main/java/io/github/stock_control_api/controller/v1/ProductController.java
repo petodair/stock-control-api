@@ -2,6 +2,7 @@ package io.github.stock_control_api.controller.v1;
 
 import io.github.stock_control_api.builder.ResponseBuilder;
 import io.github.stock_control_api.dto.v1.ApiResponse;
+import io.github.stock_control_api.dto.v1.product.ProductFilter;
 import io.github.stock_control_api.dto.v1.product.ProductRequestDTO;
 import io.github.stock_control_api.dto.v1.product.ProductResponseDTO;
 import io.github.stock_control_api.entity.Product;
@@ -15,7 +16,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping("v1/products")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -23,8 +24,10 @@ public class ProductController {
     private final ProductMapper productMapper;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ProductResponseDTO>>> findAll(){
-        List<ProductResponseDTO> products = productService.findAll()
+    public ResponseEntity<ApiResponse<List<ProductResponseDTO>>> findAll(
+            ProductFilter productFilter
+    ){
+        List<ProductResponseDTO> products = productService.findAll(productFilter)
                 .stream()
                 .map(productMapper::toDto)
                 .toList();
