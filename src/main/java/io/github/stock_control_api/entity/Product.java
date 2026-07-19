@@ -9,7 +9,6 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -28,4 +27,10 @@ public class Product {
 
     @Column(precision = 8, scale = 2)
     private BigDecimal price;
+
+    public Product(String name, String code, BigDecimal price) {
+        this.name = name;
+        this.code = code;
+        this.price = price;
+    }
 }
