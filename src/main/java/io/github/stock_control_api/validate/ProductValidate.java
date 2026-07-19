@@ -1,9 +1,11 @@
 package io.github.stock_control_api.validate;
 
+import io.github.stock_control_api.entity.Product;
 import io.github.stock_control_api.exception.product.ProductAlreadyExistsException;
 import io.github.stock_control_api.exception.product.ProductNotFoundException;
 import io.github.stock_control_api.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -22,6 +24,21 @@ public class ProductValidate {
         if(productRepository.existsByCode(code)){
             throw new ProductAlreadyExistsException("Já existe esse produto " +
                     "cadastrado como o código: " + code);
+        }
+    }
+
+    public void toUpdate(Product newProduct, Product toUpdate){
+        if(!newProduct.getName().isBlank()) {
+            toUpdate.setName(newProduct.getName());
+        }
+        if(!newProduct.getCode().isBlank()){
+            toUpdate.setCode(newProduct.getCode());
+        }
+        if(ObjectUtils.isNotEmpty(newProduct.getPrice())){
+            toUpdate.setPrice(newProduct.getPrice());
+        }
+        if(ObjectUtils.isNotEmpty(newProduct.getProductType())){
+            toUpdate.setProductType(newProduct.getProductType());
         }
     }
 }

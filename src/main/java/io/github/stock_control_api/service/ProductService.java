@@ -7,7 +7,9 @@ import io.github.stock_control_api.repository.ProductRepository;
 import io.github.stock_control_api.specification.ProductSpecification;
 import io.github.stock_control_api.validate.ProductValidate;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,19 +29,20 @@ public class ProductService {
                 new ProductNotFoundException(id));
     }
 
+    @Transactional
     public Product save(Product product){
         this.productValidate.existsByCode(product.getCode());
         return productRepository.save(product);
     }
 
+    @Transactional
     public Product update(Product product, Long id){
         Product productToUpdate = this.findById(id);
-        productToUpdate.setName(product.getName());
-        productToUpdate.setCode(product.getCode());
-        productToUpdate.setPrice(product.getPrice());
+        this.productValidate.toUpdate(product, productToUpdate);
         return productRepository.save(product);
     }
 
+    @Transactional
     public void deleteById(Long id){
         this.productValidate.existsById(id);
         this.productRepository.deleteById(id);
