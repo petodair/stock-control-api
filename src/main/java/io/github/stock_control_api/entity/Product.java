@@ -32,4 +32,10 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_type_id")
     private ProductType productType;
+
+    public Product(String name, String code, BigDecimal price) {
+        this.name = name;
+        this.code = code;
+        this.price = price;
+    }
 }

@@ -10,18 +10,18 @@ public class ProductMock {
     private ProductMock(){}
 
     public static Product mockProduct(){
-        return new Product(null,"Alcatra c/ Maminha", "8679", new BigDecimal("39.90"));
+        return new Product("Alcatra c/ Maminha", "8679", new BigDecimal("39.90"));
     }
 
     public static Product mockProductWithId(){
-        return new Product(1L,"Alcatra c/ Maminha", "8679", new BigDecimal("39.90"));
+        return new Product("Alcatra c/ Maminha", "8679", new BigDecimal("39.90"));
     }
 
     public static List<Product> mockProductList(){
         return List.of(
                 mockProduct(),
-                new Product(2L,"Miolo da Alcatra", "2592", new BigDecimal("39.90")),
-                new Product(3L,"Frango Cong", "35385", new BigDecimal("9.98"))
+                new Product("Miolo da Alcatra", "2592", new BigDecimal("39.90")),
+                new Product("Frango Cong", "35385", new BigDecimal("9.98"))
         );
     }
 }
