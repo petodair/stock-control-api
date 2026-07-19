@@ -39,7 +39,7 @@ public class ProductService {
     public Product update(Product product, Long id){
         Product productToUpdate = this.findById(id);
         this.productValidate.toUpdate(product, productToUpdate);
-        return productRepository.save(product);
+        return productRepository.save(productToUpdate);
     }
 
     @Transactional

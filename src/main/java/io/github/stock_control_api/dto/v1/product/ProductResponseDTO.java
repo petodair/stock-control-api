@@ -6,6 +6,7 @@ public record ProductResponseDTO(
         Long id,
         String name,
         String code,
-        BigDecimal price
+        BigDecimal price,
+        String productType
 ) {
 }

@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ProductMapper{
 
+    @Mapping(target = "productType", source = "productType.name")
     ProductResponseDTO toDto(Product product);
 
     @Mapping(target = "id", ignore = true)

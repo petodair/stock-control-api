@@ -4,6 +4,7 @@ import io.github.stock_control_api.entity.Product;
 import io.github.stock_control_api.exception.product.ProductAlreadyExistsException;
 import io.github.stock_control_api.exception.product.ProductNotFoundException;
 import io.github.stock_control_api.repository.ProductRepository;
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Component;
@@ -28,10 +29,10 @@ public class ProductValidate {
     }
 
     public void toUpdate(Product newProduct, Product toUpdate){
-        if(!newProduct.getName().isBlank()) {
+        if(StringUtils.isNotBlank(newProduct.getName())) {
             toUpdate.setName(newProduct.getName());
         }
-        if(!newProduct.getCode().isBlank()){
+        if(StringUtils.isNotBlank(newProduct.getCode())){
             toUpdate.setCode(newProduct.getCode());
         }
         if(ObjectUtils.isNotEmpty(newProduct.getPrice())){
