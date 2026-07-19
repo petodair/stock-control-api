@@ -15,7 +15,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("v1/product-type")
+@RequestMapping("v1/product-types")
 public class ProductTypeController {
 
     private final ProductTypeService productTypeService;
