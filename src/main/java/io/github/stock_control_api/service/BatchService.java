@@ -1,8 +1,10 @@
 package io.github.stock_control_api.service;
 
+import io.github.stock_control_api.dto.v1.batch.BatchFilter;
 import io.github.stock_control_api.entity.Batch;
 import io.github.stock_control_api.exception.batch.BatchNotFoundException;
 import io.github.stock_control_api.repository.BatchRepository;
+import io.github.stock_control_api.specification.BatchSpecification;
 import io.github.stock_control_api.validate.BatchValidate;
 import io.github.stock_control_api.validate.ProductValidate;
 import jakarta.transaction.Transactional;
@@ -26,8 +28,8 @@ public class BatchService {
         );
     }
 
-    public List<Batch> findAll(){
-        return batchRepository.findAll();
+    public List<Batch> findAll(BatchFilter filter){
+        return batchRepository.findAll(BatchSpecification.withFilter(filter));
     }
 
     @Transactional
