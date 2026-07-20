@@ -59,7 +59,7 @@ jobs:
           USUARIOCPANEL: ${{ secrets.USUARIOCPANEL }}
           HOST: ${{ secrets.HOST }}
           SENHACPANEL: ${{ secrets.SENHACPANEL }}
-        run: |
+      run: |
           expect -c "
           set timeout 20
           spawn ssh -o StrictHostKeyChecking=no $USUARIOCPANEL@$HOST
