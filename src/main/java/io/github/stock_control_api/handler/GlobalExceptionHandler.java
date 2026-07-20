@@ -2,6 +2,7 @@ package io.github.stock_control_api.handler;
 
 import io.github.stock_control_api.builder.ResponseBuilder;
 import io.github.stock_control_api.dto.v1.ApiResponse;
+import io.github.stock_control_api.exception.InvalidDateException;
 import io.github.stock_control_api.exception.ResourceAlreadyExistsException;
 import io.github.stock_control_api.exception.ResourceNotFoundException;
 import io.github.stock_control_api.exception.product.ProductAlreadyExistsException;
@@ -24,6 +25,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleResourceAlreadyExistsException(
             ResourceAlreadyExistsException ex
             ) {
+        return ResponseBuilder.<Void>builder()
+                .message(ex.getMessage())
+                .conflict();
+    }
+
+    @ExceptionHandler(InvalidDateException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInvalidDateException(InvalidDateException ex) {
         return ResponseBuilder.<Void>builder()
                 .message(ex.getMessage())
                 .conflict();

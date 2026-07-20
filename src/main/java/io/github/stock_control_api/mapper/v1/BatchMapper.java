@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 public interface BatchMapper {
 
     @Mapping(target = "id", ignore = true)
-    Batch toDto(BatchRequestDTO dto);
+    Batch toEntity(BatchRequestDTO dto);
 
     @Mapping(target = "productName", source = "product.name")
     @Mapping(target = "productCode", source = "product.code")

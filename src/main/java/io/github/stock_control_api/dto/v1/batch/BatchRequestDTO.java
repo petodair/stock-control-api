@@ -14,5 +14,6 @@ public record BatchRequestDTO(
         Location location,
         LocalDate receivedAt,
         Product product
+
 ) {
 }
