@@ -1,0 +1,218 @@
+<!-- Created with Jaspersoft Studio version 7.0.6.final using JasperReports Library version 7.0.6-5d2a603fdc6b3db8f842a83383e594f41891534d  -->
+<jasperReport name="batches" language="java" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ebfc0953-bcee-4248-bb11-75a35d68d239">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MySQL Stock Control Adapter"/>
+	<style name="Zebra Style" mode="Opaque">
+		<conditionalStyle mode="Opaque" backcolor="#E0E0E0">
+			<conditionExpression><![CDATA[$V{REPORT_COUNT} % 2 == 0]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+    <parameter name="LOGO" class="java.io.InputStream"/>
+    <parameter name="LOGO_TEXT" class="java.io.InputStream"/>
+    <parameter name="ORDER_BY" class="java.lang.String"/>
+	<query language="SQL"><![CDATA[SELECT
+	b.manufacturing,
+	b.validity,
+	COALESCE(b.quantity,0) AS quantity,
+	b.batch_number,
+	b.location,
+	received_at,
+	p.name,
+	p.code,
+	COALESCE(p.price,0) AS price,
+	(COALESCE(b.quantity, 0) * COALESCE(p.price, 0.00)) AS total_value
+FROM stock_control_db.tb_batch b
+	INNER JOIN stock_control_db.tb_product p ON 
+	 b.product_id = p.id
+    ORDER BY $P!{ORDER_BY}]]></query>
+	<field name="manufacturing" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="manufacturing"/>
+		<property name="com.jaspersoft.studio.field.label" value="manufacturing"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tb_batch"/>
+	</field>
+	<field name="validity" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="validity"/>
+		<property name="com.jaspersoft.studio.field.label" value="validity"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tb_batch"/>
+	</field>
+	<field name="quantity" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="quantity"/>
+		<property name="com.jaspersoft.studio.field.label" value="quantity"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tb_batch"/>
+	</field>
+	<field name="batch_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="batch_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="batch_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tb_batch"/>
+	</field>
+	<field name="location" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="location"/>
+		<property name="com.jaspersoft.studio.field.label" value="location"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tb_batch"/>
+	</field>
+	<field name="received_at" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="received_at"/>
+		<property name="com.jaspersoft.studio.field.label" value="received_at"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tb_batch"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tb_product"/>
+	</field>
+	<field name="code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="code"/>
+		<property name="com.jaspersoft.studio.field.label" value="code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tb_product"/>
+	</field>
+	<field name="price" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="price"/>
+		<property name="com.jaspersoft.studio.field.label" value="price"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tb_product"/>
+	</field>
+	<field name="total_value" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="total_value"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_value"/>
+	</field>
+	<variable name="TOTAL_PRICE" calculation="Sum" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{total_value}]]></expression>
+	</variable>
+	<background splitType="Stretch"/>
+	<title height="71" splitType="Stretch">
+		<element kind="image" uuid="0322cc07-7d0e-4af9-abe9-b3d9273638fc" x="80" y="32" width="130" height="39">
+			<expression><![CDATA[$P{LOGO_TEXT}]]></expression>
+		</element>
+		<element kind="image" uuid="3c347ade-6448-492f-be27-2c03997378c6" x="128" y="0" width="35" height="30">
+			<expression><![CDATA[$P{LOGO}]]></expression>
+		</element>
+		<element kind="staticText" uuid="38b1f700-f9a7-458b-8f4f-8fe273a48619" x="260" y="0" width="420" height="71" backcolor="#0E35AB" fontName="Arial" fontSize="40.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Tabela de Produtos]]></text>
+		</element>
+	</title>
+	<pageHeader height="35" splitType="Stretch"/>
+	<columnHeader height="30" splitType="Stretch">
+		<element kind="staticText" uuid="c6c5f2f4-a623-4915-9cf1-55ed5bf5760a" mode="Opaque" x="0" y="0" width="85" height="30" forecolor="#FFFFFF" backcolor="#0B3545" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Código]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a43e4013-876e-482e-b5f5-6123439df5da"/>
+			<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+		</element>
+		<element kind="staticText" uuid="a375817d-b604-4f43-92f9-83a14f8598f3" mode="Opaque" x="85" y="0" width="150" height="30" forecolor="#FFFFFF" backcolor="#0B3545" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Nome do Produto]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8a7c32aa-3ed9-4c4d-a154-17804cb2231d"/>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+		</element>
+		<element kind="staticText" uuid="4c843ead-c2fe-4684-bb81-e9a85e930f20" mode="Opaque" x="235" y="0" width="100" height="30" forecolor="#FFFFFF" backcolor="#0B3545" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Número do Lote]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b9c9ef15-acac-45a0-9892-f1ea35fabffa"/>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+		</element>
+		<element kind="staticText" uuid="3c9dfe09-aea2-42ac-9a77-c4933bbaf981" mode="Opaque" x="335" y="0" width="75" height="30" forecolor="#FFFFFF" backcolor="#0B3545" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Localização]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6ffebaba-eaba-4d96-8d94-65d48bc21799"/>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+		</element>
+		<element kind="staticText" uuid="ae755ca0-d7e3-4226-a687-88f4c2086aa1" mode="Opaque" x="410" y="0" width="55" height="30" forecolor="#FFFFFF" backcolor="#0B3545" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Quantidade]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3a1cf96b-f8ff-4955-b806-5c9ff5486e0a"/>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+		</element>
+		<element kind="staticText" uuid="1d6a234f-60ca-44f8-b218-0076ffec4c75" mode="Opaque" x="465" y="0" width="80" height="30" forecolor="#FFFFFF" backcolor="#0B3545" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Fabricação]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c3b38200-ccae-480c-bda7-6df1d6e9afd7"/>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+		</element>
+		<element kind="staticText" uuid="edf2ebe9-e82a-405d-ab19-a410c2958f30" mode="Opaque" x="545" y="0" width="65" height="30" forecolor="#FFFFFF" backcolor="#0B3545" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Validade]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3c4a6bd4-fdae-4ceb-bb76-ca37261973fb"/>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+		</element>
+		<element kind="staticText" uuid="b2037d72-1282-45ad-b38c-40aeff48e364" mode="Opaque" x="610" y="0" width="80" height="30" forecolor="#FFFFFF" backcolor="#0B3545" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Recebimento]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9e6501cf-93ad-4c6e-8126-aa38d0f8ab86"/>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+		</element>
+		<element kind="staticText" uuid="00efc109-40f4-464f-9fb7-91277b6ec4d3" mode="Opaque" x="690" y="0" width="50" height="30" forecolor="#FFFFFF" backcolor="#0B3545" bold="true" hTextAlign="Center" vTextAlign="Middle" style="Zebra Style">
+			<text><![CDATA[Preço]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ca8929ff-ef46-4e02-9a90-d6770a46a676"/>
+		</element>
+		<element kind="staticText" uuid="b106525f-3957-42cc-9e34-a22888abd000" mode="Opaque" x="740" y="0" width="62" height="30" forecolor="#FFFFFF" backcolor="#0B3545" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Custo]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fc5d8c4c-1793-4061-a840-767ab9a8be6e"/>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<element kind="textField" uuid="d07a8fa9-aca4-4eff-a72e-97e2168d3e30" x="0" y="0" width="85" height="30" hTextAlign="Center" vTextAlign="Middle" style="Zebra Style">
+				<expression><![CDATA[$F{code}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a43e4013-876e-482e-b5f5-6123439df5da"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="27b400e2-247e-4fdf-b782-059784413e02" x="85" y="0" width="150" height="30" vTextAlign="Middle" style="Zebra Style">
+				<expression><![CDATA[$F{name}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8a7c32aa-3ed9-4c4d-a154-17804cb2231d"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="70e63395-43e5-43b6-9a86-3115c0809c5d" x="235" y="0" width="100" height="30" hTextAlign="Center" vTextAlign="Middle" style="Zebra Style">
+				<expression><![CDATA[$F{batch_number}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b9c9ef15-acac-45a0-9892-f1ea35fabffa"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="6ed65e3b-b1d6-46f5-ab13-a7b42aca2137" x="335" y="0" width="75" height="30" hTextAlign="Center" vTextAlign="Middle" style="Zebra Style">
+				<expression><![CDATA[$F{location}.equals("STOCK") ? "Estoque" : "Área de Vendas"]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6ffebaba-eaba-4d96-8d94-65d48bc21799"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="bf86fae7-75fe-4bef-8685-c2982b6f0e69" x="410" y="0" width="55" height="30" hTextAlign="Center" vTextAlign="Middle" style="Zebra Style">
+				<expression><![CDATA[String.format(Locale.US,"%.2f", $F{quantity})]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3a1cf96b-f8ff-4955-b806-5c9ff5486e0a"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="e76c698e-7e77-4c92-8bfc-2f2b3d0aab47" x="465" y="0" width="80" height="30" hTextAlign="Center" vTextAlign="Middle" style="Zebra Style">
+				<expression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{manufacturing})]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c3b38200-ccae-480c-bda7-6df1d6e9afd7"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="161f0a2f-b973-47ec-8193-0a390182b891" x="545" y="0" width="65" height="30" hTextAlign="Center" vTextAlign="Middle" style="Zebra Style">
+				<expression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{validity})]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3c4a6bd4-fdae-4ceb-bb76-ca37261973fb"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="443ac412-b067-4327-9891-541f7d8942b7" x="610" y="0" width="80" height="30" hTextAlign="Center" vTextAlign="Middle" style="Zebra Style">
+				<expression><![CDATA[$F{received_at} != null 
+    ? new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{received_at}) 
+    : "Não informado"]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9e6501cf-93ad-4c6e-8126-aa38d0f8ab86"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="textField" uuid="66c7abf5-ae58-4b58-96ed-dc0182e5ce5f" x="690" y="0" width="50" height="30" hTextAlign="Center" vTextAlign="Middle" style="Zebra Style">
+				<expression><![CDATA["R$"+String.format("%.2f",$F{price})]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ca8929ff-ef46-4e02-9a90-d6770a46a676"/>
+			</element>
+			<element kind="textField" uuid="4c10f59f-4202-4ff0-bac5-c85a38b48283" x="740" y="0" width="62" height="30" hTextAlign="Center" vTextAlign="Middle" style="Zebra Style">
+				<expression><![CDATA["R$" + String.format("%.2f",$F{total_value})]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fc5d8c4c-1793-4061-a840-767ab9a8be6e"/>
+			</element>
+		</band>
+	</detail>
+	<columnFooter height="35" splitType="Stretch"/>
+	<pageFooter height="30" splitType="Stretch">
+		<element kind="textField" uuid="304170c1-cc2f-4c52-96e3-1e181eae3680" x="727" y="0" width="75" height="30" evaluationTime="Report" hTextAlign="Left">
+			<expression><![CDATA[" de " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" uuid="e1d441ce-861c-40a2-8898-f5da4eaa91b4" x="627" y="0" width="100" height="30" hTextAlign="Right">
+			<expression><![CDATA["Página " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" uuid="620e99ba-bb48-41ed-86cf-c83d69668cb7" x="0" y="0" width="100" height="30" hTextAlign="Right">
+			<expression><![CDATA[new java.text.SimpleDateFormat("dd 'de' MMMM 'de' yyyy", new java.util.Locale("pt", "BR")).format(new java.util.Date())]]></expression>
+		</element>
+		<element kind="textField" uuid="b8a1971b-5a4f-4b65-b8e2-60f8b03e0f94" x="105" y="0" width="100" height="30" pattern="HH:mm" hTextAlign="Left">
+			<expression><![CDATA[new java.util.Date()]]></expression>
+		</element>
+	</pageFooter>
+	<summary height="30" splitType="Stretch">
+		<element kind="textField" uuid="790fbdbe-97ae-4422-890a-82a1af3a55d6" x="650" y="0" width="151" height="30" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA[String.format("Custo Total R$%.2f",$V{TOTAL_PRICE})]]></expression>
+		</element>
+	</summary>
+</jasperReport>
