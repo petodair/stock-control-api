@@ -29,8 +29,6 @@ public class UserService {
 
     public User save(User user){
         userValidate.existsByFirstNameAndLastName(user);
-        this.emailService.sendSimpleEmail(user.getEmail(),
-                "Confirmação de email", "Confirme se email");
         return userRepository.save(user);
     }
 
