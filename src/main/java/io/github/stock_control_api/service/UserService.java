@@ -3,6 +3,7 @@ package io.github.stock_control_api.service;
 import io.github.stock_control_api.entity.User;
 import io.github.stock_control_api.exception.user.UserNotFoundException;
 import io.github.stock_control_api.repository.UserRepository;
+import io.github.stock_control_api.service.email.EmailService;
 import io.github.stock_control_api.validate.UserValidate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.UUID;
 public class UserService {
     private final UserRepository userRepository;
     private final UserValidate userValidate;
+    private final EmailService emailService;
 
     public User findById(UUID uuid){
         return this.userRepository.findById(uuid).orElseThrow(() ->
@@ -27,6 +29,8 @@ public class UserService {
 
     public User save(User user){
         userValidate.existsByFirstNameAndLastName(user);
+        this.emailService.sendSimpleEmail(user.getEmail(),
+                "Confirmação de email", "Confirme se email");
         return userRepository.save(user);
     }
 
