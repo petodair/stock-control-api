@@ -4,8 +4,12 @@ import io.github.stock_control_api.entity.User;
 import io.github.stock_control_api.exception.user.UserNotFoundException;
 import io.github.stock_control_api.repository.UserRepository;
 import io.github.stock_control_api.service.email.EmailService;
+import io.github.stock_control_api.service.email.SmtpEmailService;
 import io.github.stock_control_api.validate.UserValidate;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,10 +17,10 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final UserValidate userValidate;
-    private final EmailService emailService;
 
     public User findById(UUID uuid){
         return this.userRepository.findById(uuid).orElseThrow(() ->

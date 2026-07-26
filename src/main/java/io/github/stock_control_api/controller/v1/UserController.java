@@ -9,6 +9,7 @@ import io.github.stock_control_api.entity.User;
 import io.github.stock_control_api.mapper.v1.UserMapper;
 import io.github.stock_control_api.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("v1/users")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
     private final UserService userService;
