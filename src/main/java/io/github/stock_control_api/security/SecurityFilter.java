@@ -6,12 +6,14 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -27,8 +29,10 @@ public class SecurityFilter extends OncePerRequestFilter {
         String token = recoveryToken(request);
         String login = this.tokenService.validateToken(token);
         if (login != null) {
+            List<String> roles = this.tokenService.getRoles(token);
             UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(login, null);
+                    new UsernamePasswordAuthenticationToken(
+                            login, null, roles.stream().map(SimpleGrantedAuthority::new).toList());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
