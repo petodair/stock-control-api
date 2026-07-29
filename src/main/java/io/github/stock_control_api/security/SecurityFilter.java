@@ -1,5 +1,6 @@
 package io.github.stock_control_api.security;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -27,13 +28,20 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = recoveryToken(request);
-        String login = this.tokenService.validateToken(token);
-        if (login != null) {
-            List<String> roles = this.tokenService.getRoles(token);
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(
-                            login, null, roles.stream().map(SimpleGrantedAuthority::new).toList());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        if (token != null && !token.isBlank()) {
+            try {
+                String login = this.tokenService.validateToken(token);
+                if(login != null) {
+                    List<String> roles = this.tokenService.getRoles(token);
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(
+                                    login, null, roles.stream().map(SimpleGrantedAuthority::new).toList());
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            } catch (JWTVerificationException e) {
+                SecurityContextHolder.clearContext();
+            }
         }
         filterChain.doFilter(request, response);
     }
