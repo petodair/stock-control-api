@@ -6,6 +6,7 @@ import io.github.stock_control_api.repository.UserRepository;
 import io.github.stock_control_api.validate.UserValidate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class UserService {
     private final UserRepository userRepository;
     private final UserValidate userValidate;
+    private final PasswordEncoder encoder;
 
     public User findById(UUID uuid){
         return this.userRepository.findById(uuid).orElseThrow(() ->
@@ -29,6 +31,7 @@ public class UserService {
 
     public User save(User user){
         userValidate.existsByFirstNameAndLastName(user);
+        user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 

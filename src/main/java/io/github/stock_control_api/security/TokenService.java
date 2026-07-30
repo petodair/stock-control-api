@@ -5,8 +5,10 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import io.github.stock_control_api.entity.User;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -39,32 +41,33 @@ public class TokenService {
 
     public String validateToken(String token){
         try{
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.require(algorithm)
-                    .withIssuer(issuer)
-                    .build()
-                    .verify(token)
-                    .getSubject();
+            return decode(token).getSubject();
         }
         catch (JWTVerificationException exception){
-            return null;
+            throw new BadCredentialsException("Token invalido");
         }
     }
 
     public List<String> getRoles(String token){
         try{
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.require(algorithm)
-                    .withIssuer(issuer)
-                    .build()
-                    .verify(token)
-                    .getClaim("roles").asList(String.class);
+            return decode(token).getClaim("roles").asList(String.class);
         } catch(JWTVerificationException exception){
             throw new RuntimeException(exception.getMessage());
         }
     }
 
-    public Instant generateExpiration(){
+    public DecodedJWT decode(String token){
+        return JWT.require(algorithm())
+                .withIssuer(issuer)
+                .build()
+                .verify(token);
+    }
+
+    private Algorithm algorithm(){
+        return Algorithm.HMAC256(secret);
+    }
+
+    private Instant generateExpiration(){
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.ofHours(-3));
     }
 }

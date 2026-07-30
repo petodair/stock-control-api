@@ -1,11 +1,14 @@
 package io.github.stock_control_api.builder;
 
 import io.github.stock_control_api.dto.v1.ApiResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ResponseBuilder<D> {
 
@@ -13,6 +16,7 @@ public class ResponseBuilder<D> {
     HttpStatus status = HttpStatus.OK;
     private String message = "";
     private D data;
+    private final HttpHeaders headers = new HttpHeaders();
 
     private ResponseBuilder() {}
 
@@ -21,7 +25,7 @@ public class ResponseBuilder<D> {
     }
 
     public ResponseEntity<ApiResponse<D>> build(){
-        return ResponseEntity.status(this.status).body(createResponse());
+        return ResponseEntity.status(this.status).headers(headers).body(createResponse());
     }
 
     public ResponseEntity<ApiResponse<D>> ok(){
@@ -38,7 +42,7 @@ public class ResponseBuilder<D> {
                 .path("/{id}")
                 .buildAndExpand(id)
                 .toUri();
-        return ResponseEntity.created(uri).body(createResponse());
+        return ResponseEntity.created(uri).headers(headers).body(createResponse());
     }
 
     public ResponseEntity<ApiResponse<D>> notFound(){
@@ -81,6 +85,11 @@ public class ResponseBuilder<D> {
 
     public ResponseBuilder<D> data(D data){
         this.data = data;
+        return this;
+    }
+
+    public ResponseBuilder<D> addHeader(String headerName, String headerValue){
+        this.headers.add(headerName,headerValue);
         return this;
     }
 }
