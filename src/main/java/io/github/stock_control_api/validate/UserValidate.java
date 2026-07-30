@@ -5,6 +5,7 @@ import io.github.stock_control_api.exception.user.UserAlreadyExistsException;
 import io.github.stock_control_api.repository.UserRepository;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -24,12 +25,22 @@ public class UserValidate {
     }
 
     public void toUpdate(User newUser, User toUpdate){
+        String oldFirstName = toUpdate.getFirstName();
+        String oldLastName = toUpdate.getLastName();
         if(StringUtils.isNotBlank(newUser.getFirstName())){
             toUpdate.setFirstName(newUser.getFirstName());
         }
         if(StringUtils.isNotBlank(newUser.getLastName())){
             toUpdate.setLastName(newUser.getLastName());
         }
-        existsByFirstNameAndLastName(toUpdate);
+        if(ObjectUtils.isNotEmpty(newUser.getAuthorities())){
+            toUpdate.setAuthorities(newUser.getAuthorities());
+        }
+        //Checagem aqui por o lastName pode ser nulo no banco.
+        if(oldLastName != null){
+            if(!oldFirstName.equals(toUpdate.getFirstName()) && !oldLastName.equals(toUpdate.getLastName())){
+                existsByFirstNameAndLastName(toUpdate);
+            }
+        }
     }
 }

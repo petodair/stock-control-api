@@ -2,11 +2,9 @@ package io.github.stock_control_api.dto.v1.user;
 
 import java.util.List;
 
-public record UserRequestDTO(
-        String firstName,
+public record UserUpdateRequestDTO(
+        String userName,
         String lastName,
-        String email,
-        String password,
         List<String> authorities
 ) {
 }

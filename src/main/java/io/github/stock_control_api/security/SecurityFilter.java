@@ -36,10 +36,10 @@ public class SecurityFilter extends OncePerRequestFilter {
                 String login = this.tokenService.validateToken(token);
                 log.info("Usuario de login '{}' autenticado", login);
                 if(login != null) {
-                    List<String> roles = this.tokenService.getRoles(token);
+                    List<String> authorities = this.tokenService.getAuthorities(token);
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(
-                                    login, null, roles.stream().map(SimpleGrantedAuthority::new).toList());
+                                    login, null, authorities.stream().map(SimpleGrantedAuthority::new).toList());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } catch (JWTVerificationException e) {

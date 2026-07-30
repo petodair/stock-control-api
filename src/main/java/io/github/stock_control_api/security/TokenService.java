@@ -30,7 +30,7 @@ public class TokenService {
             return JWT.create()
                     .withIssuer(issuer)
                     .withSubject(user.getEmail())
-                    .withClaim("roles", user.getRoles())
+                    .withClaim("authorities", user.getAuthorities())
                     .withExpiresAt(generateExpiration())
                     .sign(algorithm);
         }
@@ -48,9 +48,9 @@ public class TokenService {
         }
     }
 
-    public List<String> getRoles(String token){
+    public List<String> getAuthorities(String token){
         try{
-            return decode(token).getClaim("roles").asList(String.class);
+            return decode(token).getClaim("authorities").asList(String.class);
         } catch(JWTVerificationException exception){
             throw new RuntimeException(exception.getMessage());
         }

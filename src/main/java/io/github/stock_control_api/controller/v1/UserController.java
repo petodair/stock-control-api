@@ -4,7 +4,7 @@ import io.github.stock_control_api.builder.ResponseBuilder;
 import io.github.stock_control_api.dto.v1.ApiResponse;
 import io.github.stock_control_api.dto.v1.user.UserRequestDTO;
 import io.github.stock_control_api.dto.v1.user.UserResponseDTO;
-import io.github.stock_control_api.dto.v1.user.UserUpdateResquestDTO;
+import io.github.stock_control_api.dto.v1.user.UserUpdateRequestDTO;
 import io.github.stock_control_api.entity.User;
 import io.github.stock_control_api.mapper.v1.UserMapper;
 import io.github.stock_control_api.service.UserService;
@@ -58,7 +58,7 @@ public class UserController {
 
     @PutMapping("/{uuid}")
     public ResponseEntity<ApiResponse<UserResponseDTO>> update(
-            @RequestBody UserUpdateResquestDTO dto,
+            @RequestBody UserUpdateRequestDTO dto,
             @PathVariable UUID uuid
     ){
         User user = this.userService.update(userMapper.toEntity(dto), uuid);

@@ -24,7 +24,7 @@ public class User {
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "tb_user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
-    private List<String> roles;
+    @CollectionTable(name = "tb_user_authority", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "authority")
+    private List<String> authorities;
 }

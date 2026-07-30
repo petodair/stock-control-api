@@ -31,8 +31,9 @@ public class SecurityConfiguration {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.POST, "/v1/users","/v1/auth/*").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/v1/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/v1/users").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/v1/users").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/v1/users/*").permitAll()
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
                 );
