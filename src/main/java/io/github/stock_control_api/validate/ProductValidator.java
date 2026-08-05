@@ -11,35 +11,41 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class ProductValidate {
+public class ProductValidator implements Validator<Product>{
 
     private final ProductRepository productRepository;
 
-    public void existsById(Long id){
-        if(!productRepository.existsById(id)){
+    @Override
+    public void shouldExists(Product product){
+        if(!productRepository.existsById(product.getId())){
             throw new ProductNotFoundException("Produto não encontrado para a operação");
         }
     }
 
-    public void existsByCode(String code){
-        if(productRepository.existsByCode(code)){
+    @Override
+    public void shouldNotExists(Product product){
+        if(productRepository.existsByCode(product.getCode())){
             throw new ProductAlreadyExistsException("Já existe esse produto " +
-                    "cadastrado como o código: " + code);
+                    "cadastrado como o código: " + product.getCode());
         }
     }
 
-    public void toUpdate(Product newProduct, Product toUpdate){
+    @Override
+    public void checkUpdate(Product newProduct, Product oldProduct){
+        if(!oldProduct.getCode().equals(newProduct.getCode())){
+            shouldNotExists(newProduct);
+        }
         if(StringUtils.isNotBlank(newProduct.getName())) {
-            toUpdate.setName(newProduct.getName());
+            oldProduct.setName(newProduct.getName());
         }
         if(StringUtils.isNotBlank(newProduct.getCode())){
-            toUpdate.setCode(newProduct.getCode());
+            oldProduct.setCode(newProduct.getCode());
         }
         if(ObjectUtils.isNotEmpty(newProduct.getPrice())){
-            toUpdate.setPrice(newProduct.getPrice());
+            oldProduct.setPrice(newProduct.getPrice());
         }
         if(ObjectUtils.isNotEmpty(newProduct.getProductType())){
-            toUpdate.setProductType(newProduct.getProductType());
+            oldProduct.setProductType(newProduct.getProductType());
         }
     }
 }

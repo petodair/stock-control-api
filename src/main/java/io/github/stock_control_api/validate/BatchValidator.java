@@ -1,7 +1,6 @@
 package io.github.stock_control_api.validate;
 
 import io.github.stock_control_api.entity.Batch;
-import io.github.stock_control_api.entity.Product;
 import io.github.stock_control_api.exception.InvalidDateException;
 import io.github.stock_control_api.exception.batch.BatchNotFoundException;
 import io.github.stock_control_api.repository.BatchRepository;
@@ -14,7 +13,7 @@ import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
-public class BatchValidate {
+public class BatchValidator implements Validator<Batch>{
 
     private final BatchRepository batchRepository;
 
@@ -40,15 +39,22 @@ public class BatchValidate {
         }
     }
 
-    public void existsById(Long id){
-        if(!this.batchRepository.existsById(id)){
+    @Override
+    public void shouldExists(Batch batch){
+        if(!this.batchRepository.existsById(batch.getId())){
             throw new BatchNotFoundException(
-                    "lote com o id:" + id + " não encontrado para a operação"
+                    "lote com o id:" + batch.getId() + " não encontrado para a operação"
             );
         }
     }
 
-    public void toUpdate(Batch newBatch, Batch toUpdate){
+    @Override
+    public void shouldNotExists(Batch entity) {
+
+    }
+
+    @Override
+    public void checkUpdate(Batch newBatch, Batch toUpdate){
         if(ObjectUtils.isNotEmpty(newBatch.getManufacturing())){
             toUpdate.setManufacturing(newBatch.getManufacturing());
         }

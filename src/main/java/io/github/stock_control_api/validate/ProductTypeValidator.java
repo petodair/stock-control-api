@@ -1,5 +1,6 @@
 package io.github.stock_control_api.validate;
 
+import io.github.stock_control_api.entity.ProductType;
 import io.github.stock_control_api.exception.producttype.ProductTypeAlreadyExistsException;
 import io.github.stock_control_api.exception.producttype.ProductTypeNotFoundException;
 import io.github.stock_control_api.repository.ProductTypeRepository;
@@ -8,20 +9,27 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class ProductTypeValidate {
+public class ProductTypeValidator implements Validator<ProductType>{
 
     private final ProductTypeRepository productTypeRepository;
 
-    public void existsById(Long id){
-        if(!this.productTypeRepository.existsById(id)){
-            throw new ProductTypeNotFoundException("Produto com id:" + id + " não encontrado.");
+    @Override
+    public void shouldExists(ProductType entity){
+        if(!this.productTypeRepository.existsById(entity.getId())){
+            throw new ProductTypeNotFoundException("Produto com id:" + entity.getId() + " não encontrado.");
         }
     }
 
-    public void existsByName(String name) {
-        if(this.productTypeRepository.existsByName(name)){
+    @Override
+    public void shouldNotExists(ProductType entity) {
+        if(this.productTypeRepository.existsByName(entity.getName())){
             throw new ProductTypeAlreadyExistsException("Já existe um tipo de produto cadastrado " +
                     "com esse nome");
         }
+    }
+
+    @Override
+    public void checkUpdate(ProductType newEntity, ProductType oldEntity) {
+
     }
 }

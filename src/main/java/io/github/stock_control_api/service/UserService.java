@@ -3,7 +3,7 @@ package io.github.stock_control_api.service;
 import io.github.stock_control_api.entity.User;
 import io.github.stock_control_api.exception.user.UserNotFoundException;
 import io.github.stock_control_api.repository.UserRepository;
-import io.github.stock_control_api.validate.UserValidate;
+import io.github.stock_control_api.validate.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,33 +16,33 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 public class UserService {
-    private final UserRepository userRepository;
-    private final UserValidate userValidate;
+    private final UserRepository repository;
+    private final UserValidator validator;
     private final PasswordEncoder encoder;
 
     public User findById(UUID uuid){
-        return this.userRepository.findById(uuid).orElseThrow(() ->
+        return this.repository.findById(uuid).orElseThrow(() ->
                 new UserNotFoundException("Nenhum usuário encontrado com o id: " + uuid));
     }
 
     public List<User> findAll(){
-        return this.userRepository.findAll();
+        return this.repository.findAll();
     }
 
     public User save(User user){
-        userValidate.existsByFirstNameAndLastName(user);
+        validator.shouldExists(user);
         user.setPassword(encoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        return repository.save(user);
     }
 
     public User update(User newUser, UUID uuid){
         User userFound = findById(uuid);
-        this.userValidate.toUpdate(newUser, userFound);
-        return this.userRepository.save(userFound);
+        this.validator.checkUpdate(newUser, userFound);
+        return this.repository.save(userFound);
     }
 
     public void deleteById(UUID uuid){
         User user = findById(uuid);
-        this.userRepository.delete(user);
+        this.repository.delete(user);
     }
 }

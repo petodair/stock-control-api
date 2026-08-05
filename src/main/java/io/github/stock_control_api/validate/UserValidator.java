@@ -8,15 +8,14 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Component
 @RequiredArgsConstructor
-public class UserValidate {
+public class UserValidator implements Validator<User>{
 
     private final UserRepository userRepository;
 
-    public void existsByFirstNameAndLastName(User user){
+    @Override
+    public void shouldNotExists(User user){
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
         if(userRepository.existsByFirstNameAndLastName(firstName,lastName)){
@@ -24,7 +23,13 @@ public class UserValidate {
         }
     }
 
-    public void toUpdate(User newUser, User toUpdate){
+    @Override
+    public void shouldExists(User entity) {
+
+    }
+
+    @Override
+    public void checkUpdate(User newUser, User toUpdate){
         String oldFirstName = toUpdate.getFirstName();
         String oldLastName = toUpdate.getLastName();
         if(StringUtils.isNotBlank(newUser.getFirstName())){
@@ -36,10 +41,10 @@ public class UserValidate {
         if(ObjectUtils.isNotEmpty(newUser.getAuthorities())){
             toUpdate.setAuthorities(newUser.getAuthorities());
         }
-        //Checagem aqui por o lastName pode ser nulo no banco.
+        //Checagem aqui por que o lastName pode ser nulo no banco.
         if(oldLastName != null){
             if(!oldFirstName.equals(toUpdate.getFirstName()) && !oldLastName.equals(toUpdate.getLastName())){
-                existsByFirstNameAndLastName(toUpdate);
+                shouldNotExists(toUpdate);
             }
         }
     }

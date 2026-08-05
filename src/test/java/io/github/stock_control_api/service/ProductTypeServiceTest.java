@@ -4,7 +4,7 @@ import io.github.stock_control_api.entity.ProductType;
 import io.github.stock_control_api.exception.producttype.ProductTypeNotFoundException;
 import io.github.stock_control_api.mock.ProductTypeMock;
 import io.github.stock_control_api.repository.ProductTypeRepository;
-import io.github.stock_control_api.validate.ProductTypeValidate;
+import io.github.stock_control_api.validate.ProductTypeValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +26,7 @@ public class ProductTypeServiceTest {
     ProductTypeRepository productTypeRepository;
 
     @Mock
-    ProductTypeValidate  productTypeValidate;
+    ProductTypeValidator productTypeValidator;
 
     @InjectMocks
     ProductTypeService productTypeService;
