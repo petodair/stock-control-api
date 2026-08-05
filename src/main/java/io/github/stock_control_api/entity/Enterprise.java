@@ -16,4 +16,8 @@ public class Enterprise {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private User admin;
 }
