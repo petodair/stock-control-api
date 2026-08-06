@@ -5,6 +5,8 @@ import io.github.stock_control_api.exception.enterprise.EnterpriseAlreadyExistsE
 import io.github.stock_control_api.repository.EnterpriseRepository;
 import io.github.stock_control_api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,6 +30,14 @@ public class EnterpriseValidator implements Validator<Enterprise>{
 
     @Override
     public void checkUpdate(Enterprise newEntity, Enterprise oldEntity) {
-
+        if(StringUtils.isNotBlank(newEntity.getName())){
+            if(!oldEntity.getName().equals(newEntity.getName())){
+                shouldNotExists(newEntity);
+            }
+            oldEntity.setName(newEntity.getName());
+        }
+        if(ObjectUtils.isNotEmpty(newEntity.getAdmin())){
+            oldEntity.setAdmin(newEntity.getAdmin());
+        }
     }
 }
