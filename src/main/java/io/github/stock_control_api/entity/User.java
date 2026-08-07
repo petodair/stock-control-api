@@ -27,4 +27,12 @@ public class User {
     @CollectionTable(name = "tb_user_authority", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "authority")
     private List<String> authorities;
+
+    @ManyToOne
+    @JoinColumn(name = "enterprise_id")
+    private Enterprise enterprise;
+
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
 }

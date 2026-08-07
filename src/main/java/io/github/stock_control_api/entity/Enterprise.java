@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+
+import java.util.List;
 
 @Entity
 @Table(name = "tb_enterprise")
@@ -20,4 +23,10 @@ public class Enterprise {
     @ManyToOne
     @JoinColumn(name = "admin_id")
     private User admin;
+
+    @OneToMany(mappedBy = "enterprise", fetch = FetchType.LAZY)
+    private List<User> employees;
+
+    @OneToMany(mappedBy = "enterprise", fetch = FetchType.LAZY)
+    private List<Department> departments;
 }
